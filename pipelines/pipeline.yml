@@ -1,0 +1,19 @@
+trigger: none
+pool:
+  vmImage: 'ubuntu-22.04'
+
+stages:
+  - stage: SanityTests
+    dependsOn: []
+    jobs:
+      - template: sanity.yml
+        parameters:
+          TEST_PATH: $(SANITY_TEST_PATH)
+
+  - stage: SmokeTests
+    dependsOn:
+      - SanityTests
+    jobs:
+      - template: smoke.yml
+        parameters:
+          TEST_PATH: $(SMOKE_TEST_PATH)

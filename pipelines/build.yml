@@ -1,0 +1,6 @@
+jobs:
+  - job: 'Build_Project'
+    continueOnError: true
+    steps:
+      - script: npm install 
+        displayName: Packages

@@ -1,0 +1,39 @@
+parameters:
+  SMOKE_TEST_PATH: ''
+
+jobs:
+  - job: 'Run_Tests'
+    continueOnError: true
+    timeoutInMinutes: 90
+    steps:
+      - script: mkdir -p ./output
+        displayName: Folders
+
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '18.x'
+          displayName: "Install Node.js"
+
+      - script: npm install
+        displayName: Packages
+
+      - script: npx mocha ${SMOKE_TEST_PATH} --reporter mocha-junit-reporter
+        displayName: "Run Smoke Tests"
+        continueOnError: true 
+
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: '**/test-results.xml'
+          testRunTitle: $(System.StageName)
+          mergeTestResults: true
+
+      - task: CopyFiles@2
+        displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+        inputs:
+          SourceFolder: '$(System.DefaultWorkingDirectory)'
+          Contents: '**test-results*.xml'
+          TargetFolder: 'output/SmokeReport'
+
+      - publish: ./output
+        artifact: $(System.StageName)_Report
