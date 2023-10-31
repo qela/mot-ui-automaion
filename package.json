@@ -1,0 +1,19 @@
+{
+  "name": "mot-ui-automation",
+  "version": "1.0.0",
+  "description": "UI Test Automation using Selenium Webdriver",
+  "scripts": {
+    "test:sanity": "mocha ./tests/sanity/*.test.js --reporter mocha-junit-reporter", 
+    "test:smoke": "mocha ./tests/smoke/*.test.js --reporter mocha-junit-reporter"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://aqel1050@dev.azure.com/aqel1050/TestAutomationDemos/_git/mot-ui-automation"
+  },
+  "author": "Ariola Qeleposhi",
+  "license": "ISC",
+  "dependencies": {
+    "mocha-junit-reporter": "^2.2.1",
+    "selenium-webdriver": "^4.14.0"
+  }
+}
