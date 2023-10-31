@@ -1,3 +1,11 @@
+schedules:
+  - cron: 0 0 * * *
+    displayName: 'Nightly Test Run'
+    always: true
+    branches:
+      include:
+        - main
+
 trigger: none
 pool:
   vmImage: 'ubuntu-22.04'
