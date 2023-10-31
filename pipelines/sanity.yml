@@ -3,7 +3,7 @@ parameters:
 
 jobs:
   - job: 'Run_Tests'
-    continueOnError: true
+    continueOnError: false
     timeoutInMinutes: 90
     steps:
       - script: mkdir -p ./output
@@ -19,9 +19,10 @@ jobs:
 
       - script: npx mocha ${SANITY_TEST_PATH} --reporter mocha-junit-reporter
         displayName: "Run Sanity Tests"
-        continueOnError: true 
+        continueOnError: false 
 
       - task: PublishTestResults@2
+        condition: succeededOrFailed()
         inputs:
           testResultsFormat: 'JUnit'
           testResultsFiles: '**/test-results.xml'
@@ -29,6 +30,7 @@ jobs:
           mergeTestResults: true
 
       - task: CopyFiles@2
+        condition: succeededOrFailed()
         displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
         inputs:
           SourceFolder: '$(System.DefaultWorkingDirectory)'
